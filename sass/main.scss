@@ -1,0 +1,28 @@
+#mapid { height: 500px; }
+
+.map-container { 
+    position: relative; 
+    // display: inline-block;
+    font-family: "Helvetica","Arial",sans-serif;
+}
+// .map-watermark { 
+//     position: absolute; 
+//     bottom: 5px; 
+//     right: 5px; 
+//     width: 92px; 
+//     height: 46px; 
+//     background: url(https://www.aerisweather.com/img/logos/watermark-small.png) no-repeat 0 0;
+// }
+.map-title {
+	z-index: 100000;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+    width: 60%;
+    background: rgba(255,255,255,0.60);
+    border-bottom: 3px solid #0097e2;
+    padding: 3px 0 3px 5px;
+}

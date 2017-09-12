@@ -16,6 +16,9 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
 
 //Set up Twitter auth
     let provider = new firebase.auth.TwitterAuthProvider();
+    provider.setCustomParameters({
+    prompt: 'select_account'
+    });
 
     let authWithProvider= function(){
         return firebase.auth().signInWithPopup(provider);

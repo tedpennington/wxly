@@ -4,6 +4,28 @@ app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserF
 	// $scope.searchText = filterFactory;
 	$scope.isLoggedIn = false;
 
+
+  //Initialize Toastr Options:
+  toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+  };
+
+  
+
   //Initialize OAuth
   twitterUserFactory.initialize();
 
@@ -12,6 +34,7 @@ $scope.login = () => {
     console.log("you clicked on login and login function is running");
     fbUserFactory.authWithProvider()
     .then((result) => {
+      console.log("result", result);
       let user = result.user.uid;
       $location.path("/home");
       // addUser();
@@ -21,11 +44,9 @@ $scope.login = () => {
       .then(function(dataFromConnect) {
             if (twitterUserFactory.isReady()) {
                 console.log("connected to Twitter", "dataFromConnect :", dataFromConnect);
-                //if the authorization is successful, hide the connect button and display the tweets
-                // $('#connectButton').fadeOut(function(){
-                //     $('#getTimelineButton, #signOut').fadeIn();
+                toastr.success("You are now connected to Twitter!", "Connected to Twitter");
                 //     $scope.refreshTimeline();
-                //     $scope.connectedTwitter = true;
+                  $scope.connectedTwitter = true;
                 // });
             } else {
 
@@ -43,6 +64,12 @@ $scope.login = () => {
 //When logout button is clicked:
 	$scope.logout = () => {
         fbUserFactory.logOut();
+        twitterUserFactory.clearCache();
+        // *** Need to clear array of tweets here***
+        // $scope.$apply(function(){
+        $scope.connectedTwitter = false;
+      // });
+        toastr.success("You are now logged out!", "Logged Out");
       };
 
 

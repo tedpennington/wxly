@@ -6,6 +6,12 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="lib/node_modules/bootstrap/dist/css/bootstrap.min.css">
 
+    <!-- Toastr CSS -->
+    <link href="lib/node_modules/toastr/build/toastr.min.css" rel="stylesheet"/>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" type="text/css" href="lib/node_modules/leaflet/dist/leaflet.css">
+
     <!-- Our CSS -->
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
@@ -20,19 +26,48 @@
     <div ng-include="'partials/navbar.html'"></div>
 
     <div class="container">
-        <div ng-view>
-        APP VIEWS GO HERE!
-            
-        </div>
-    </div>
+        <div class="row">
+
+            <div class="col-sm-8">
+                <div ng-view>
+                APP VIEWS GO HERE!
+                </div> <!-- /.ng-view-->
+            </div>
+
+            <div class="col-sm-3 offset-sm-1 blog-sidebar">
+                
+                <div class="sidebar-module">
+                    <!-- <h4>Tweet Stream</h4> -->
+                    <a class="twitter-timeline" href="https://twitter.com/NashSevereWx">Tweets by NashSevereWx</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+                <div class="sidebar-module sidebar-module-inset">
+                    <h4>About</h4>
+                    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Elsewhere</h4>
+                    <ol class="list-unstyled">
+                      <li><a href="#">GitHub</a></li>
+                      <li><a href="#">Twitter</a></li>
+                      <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div>
+            </div><!-- /.blog-sidebar -->
+
+
+        </div> <!-- /.row -->
+    </div>  <!-- /.container -->
 
 
 
 
     <!-- Jquery and Bootstrap -->
     <script type="text/javascript" src="./lib/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./lib/node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script type="text/javascript" src="./lib/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Leaflet -->
+    <script type="text/javascript" src="./lib/node_modules/leaflet/dist/leaflet.js"></script>
 
     <!-- Angular -->
     <script type="text/javascript" src="./lib/node_modules/angular/angular.min.js"></script>
@@ -43,6 +78,9 @@
 
     <!-- OAuth -->
     <script src="app/oauth.js"></script>
+
+    <!-- Toastr -->
+    <script type="text/javascript" src="./lib/node_modules/toastr/build/toastr.min.js"></script>
 
     <!-- App -->
     <script type="text/javascript" src="app/app.js"></script>

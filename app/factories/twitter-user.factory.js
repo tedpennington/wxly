@@ -24,7 +24,7 @@ app.factory("twitterUserFactory", function($q, $http, FBCreds){
             OAuth.popup('twitter', {cache:true}, function(error, result) { //cache means to execute the callback if the tokens are already present
                 if (!error) {
                     authorizationResult = result;
-                    deferred.resolve();
+                    deferred.resolve(result);
                 } else {
                     //do something if there's an error
 
@@ -32,11 +32,14 @@ app.factory("twitterUserFactory", function($q, $http, FBCreds){
             });
             return deferred.promise;
         };
-   
+   const clearCache = function() {
+            OAuth.clearCache('twitter');
+            authorizationResult = false;
+        };
 
 
 
 
-    return {initialize, connectTwitter, isReady};
+    return {initialize, connectTwitter, isReady, clearCache};
 
 });
