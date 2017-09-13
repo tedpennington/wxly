@@ -6,12 +6,15 @@
 
 app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFactory){
 
-    const getLatestTweets = function(maxId, county){
+    const getLatestTweets = function(maxId, county, onlyTspotter){
             //create deferred object
             var deferred = $q.defer();
             //user timeline:
             // var url = '/1.1/statuses/home_timeline.json';
             var url = '1.1/search/tweets.json?q=' + county;
+            if (onlyTspotter) {
+                url += '%20%23tspotter';
+            }
             console.log('url', url);
             if (maxId) {
                 url +=  '?max_id=' + maxId;

@@ -19,7 +19,7 @@
 	<div class="col-4">
 	 	<div class="form-check">
 		    <label class="form-check-label">
-		      <input type="checkbox" class="form-check-input">
+		      <input type="checkbox" class="form-check-input" ng-model="tspotterValue" ng-change="tspotterChanged()">
 		      Show only #tspotter reports
 		    </label>
 	  	</div>
@@ -28,7 +28,7 @@
 		<div class="form-group">
 			<label for="exampleSelect1">Select County:</label>
 			<select class="form-control" id="countySelect" name="countySelect" ng-model="selectedCounty" ng-change="selectCounty()">
-		      	<option value="%40nashseverewx">Davidson/Williamson</option>
+		      	<option selected value="%40nashseverewx">Davidson/Williamson</option>
 		      	<option value="%40bedfordseverewx">Bedford</option>
 		      	<option value="%40cheathmseverewx">Cheatham</option>
 		      	<option value="%40coffeeseverewx">Coffee</option>

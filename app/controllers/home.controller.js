@@ -25,30 +25,36 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 	// }
 	// catch(error) {
 
-	// 	L.Wunderground.radar(
-	//   {
-	//     appId: 'e344d5b95b258ce2',
-	//     apiRef: 'WXly'
-	//   }).addTo(mymap);
-	// console.log("error: ", error);
-	// }
+		L.Wunderground.radar(
+	  {
+	    appId: 'e344d5b95b258ce2',
+	    apiRef: 'WXly'
+	  }).addTo(mymap);
+	
+	
 
 	// *** SPOTTER REPORTS SETTINGS CONTROLS
+
+	$scope.tspotterChanged = function() {
+		// console.log("$scope.tspotterValue", $scope.tspotterValue);
+		$scope.tweets.length = 0;
+		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
+	};
 
 	$scope.selectCounty = function() {
 		// console.log("You selected this county: ", $scope.selectedCounty);
 		$scope.tweets.length = 0;
-		$scope.refreshTimeline(null, $scope.selectedCounty);
+		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
 	};
 
 	// *** TWEETS ***
 	//Create array to hold tweets.
 	$scope.tweets = [];
 
-	$scope.refreshTimeline = function(maxId, county){
+	$scope.refreshTimeline = function(maxId, county, onlyTspotter){
 
 		//using the OAuth authorization result get the latest 20 tweets from twitter for the user
-		twitterTweetsFactory.getLatestTweets(maxId, county).then(function(data) {
+		twitterTweetsFactory.getLatestTweets(maxId, county, onlyTspotter).then(function(data) {
 			console.log(data);
 			$scope.tweets = $scope.tweets.concat(data);
 		}, function() { // ***** What is this function??  Error handler as second arg to .then?? ***
