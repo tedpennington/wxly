@@ -1,6 +1,81 @@
-<h1>App View Here</h1>
-<div class="map-container">
-	<div id="mapid"></div>
-	<div class="map-title">Current Spotter Reports and Radar</div>
-	<!-- <img id="map-legend" src="img/legend.svg"/> -->
-</div>	<!-- /.map-container-->
+<div class="row">
+	<div class="col-12 main-column">
+		<!-- <h1>MAP HERE</h1> -->
+		<!-- MAP -->
+		<br>
+		<div class="map-container">
+			<div id="mapid"></div>
+			<div class="map-title">Current Spotter Reports and Radar</div>
+			<!-- <img id="map-legend" src="img/legend.svg"/> -->
+		</div>	<!-- /.map-container-->
+	</div> <!--/.col-->
+</div> <!--/.row-->
+
+	<!-- TWEETS -->
+<div class="row report-controls">
+	<div class="col-3">
+	 	<h4>Spotter Reports Settings:</h4>
+	</div>
+	<div class="col-4">
+	 	<div class="form-check">
+		    <label class="form-check-label">
+		      <input type="checkbox" class="form-check-input">
+		      Show only #tspotter reports
+		    </label>
+	  	</div>
+	</div>
+	<div class="col-5">
+		<div class="form-group">
+			<label for="exampleSelect1">Select County:</label>
+			<select class="form-control" id="countySelect" name="countySelect" ng-model="selectedCounty" ng-change="selectCounty()">
+		      	<option value="%40nashseverewx">Davidson/Williamson</option>
+		      	<option value="%40bedfordseverewx">Bedford</option>
+		      	<option value="%40cheathmseverewx">Cheatham</option>
+		      	<option value="%40coffeeseverewx">Coffee</option>
+		      	<option value="%40dicksonseverewx">Dickson</option>
+		      	<option value="%40hickmanseverewx">Hickman</option>
+		      	<option value="%40lawrencesvrewx">Lawrence</option>
+		      	<option value="%40maconseverewx">Macon</option>
+		      	<option value="%40marshseverewx">Marshall</option>
+		      	<option value="%40mauryseverewx">Maury</option>
+		      	<option value="%40ruthseverewx">Montgomery</option>
+		      	<option value="%40overtonseverewx">Overton</option>
+		      	<option value="%40putnamseverewx">Putnam</option>
+		      	<option value="%40robcoseverewx">Robertson</option>
+		      	<option value="%40ruthseverewx">Rutherford</option>
+		      	<option value="%40smithcountywx">Smith</option>
+		      	<option value="%40sumnerseverewx">Sumner</option>
+		      	<option value="%40trousdalewx">Trousdale</option>
+		      	<option value="%40wilsonseverewx">Wilson</option>
+			</select>
+		</div>
+	</div>
+</div> <!--/.row-->
+
+
+<div class="row">
+	<div class="col-12" id="results">
+        <div class="row tweet" ng-repeat="t in tweets">
+
+	        <div class="col-xs-2 col-sm-2">
+	            <img ng-src="{{t.user.profile_image_url}}" class="rounded-circle">
+	        </div>
+	        <div class="col-xs-9 col-sm-9">
+	            <small>{{t.user.name}}</small>
+	            <br> <span ng-bind-html="t.text"></span>
+	        </div>
+	        <div class="col-1">
+	        	<small>{{t.created_at | date:'short'}}</small>
+	        </div>
+
+	    </div>
+
+	    <div ng-show="rateLimitError">
+	        Rate limit reached. You are making too many requests.
+	    </div>
+	    <div>
+	        <br/>
+	        <input type="button" class="btn btn-info" id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id)" ng-show="connectedTwitter" value="Load More" />
+	    </div>
+	</div>
+</div> <!--/.row
