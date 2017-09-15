@@ -9,10 +9,10 @@
 app.factory("fbUserFactory", function($q, $http, FBCreds){
 
     // This is just the user's UID from Firebase
-    let currentUser = null;
+    let currentUser;
     // This is the complete user object that comes back from Firebase
     let FBCurrentUser = null;
-    let currentUserFullObj = null;
+    let currentUserFullObj;
 
 //Set up Twitter auth
     let provider = new firebase.auth.TwitterAuthProvider();
@@ -26,7 +26,7 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
 
 
 
-    const getCurrentUser = function(){
+    const getFirebaseId = function(){
         return currentUser;
 
     };
@@ -37,7 +37,7 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
             console.log("inside getCurrentUserFullObj");
             $http.get(`${FBCreds.databaseURL}/users/.json?orderBy="uid"&equalTo="${uid}"`)
             .then((data) => {
-                // console.log("data in getCurrentUserFullObj", data);
+                console.log("data in getCurrentUserFullObj", data);
                 currentUserFullObj = data.data;
                 let objectArr = [];
                     Object.keys(currentUserFullObj).forEach(function (key) {
@@ -53,15 +53,6 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
     };
     
 
-    // const logIn = function(userObj){
-    //     return firebase.auth().signInWithEmailAndPassword(userObj.email, userObj.password)
-    //         .catch(function(error){
-    //         let errorCode = error.code;
-    //         let errorMessage = error.message;
-    //         console.log("error", errorCode, errorMessage);
-    //     });
-
-    // };
 
 
     const logOut = function(){
@@ -71,24 +62,8 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
     };
 
 
-    // const register = function(userObj){
-    //     return firebase.auth().createUserWithEmailAndPassword(userObj.email, userObj.password)
-    //     .catch(function(error){
-    //         let errorCode = error.code;
-    //         let errorMessage = error.message;
-    //         console.log("error", errorCode, errorMessage);
-    //     });
 
-    // };
 
-    const updateDisplayName = function (name){
-        return new Promise ((resolve, reject) => { 
-            firebase.auth().currentUser.updateProfile({
-                displayName: name
-            });
-            resolve();
-        });  
-    };
 
 /* The three functions below are used in sequence to:
 1. Get the current logged in user from the auth side of FB,
@@ -161,9 +136,26 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
         // console.log("URL is: ", `${FBCreds.databaseURL}/users.json`);
         return $http.post(`${FBCreds.databaseURL}/users.json`, newObj)
         .then((data) => {
-            // console.log("added user data returned: ", data);
+            console.log("added user data returned: ", data);
             console.log("user was added to firebase db!");
-            return data;
+            return $q((resolve, reject) => {
+                let newObj = {
+                    uglyID: ""
+                };
+                newObj.uglyID = data.data.name;
+                let patchObj = JSON.stringify(newObj);
+                //patch updates one property
+                $http.patch(`${FBCreds.databaseURL}/users/${data.data.name}.json`, patchObj)
+                    .then((response) => {
+                        console.log("new user object was patched with uglyID");
+                        resolve(response);
+                        //update the local currentUser object
+                        getCurrentUserFullObj(getFirebaseId());                      
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
 
         }, (error) => {
             let errorCode = error.code;
@@ -172,19 +164,35 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
         });
     };
 
-    
+    const editUser = function(id, obj) {
+        console.log("id and obj", id, obj);
+        return $q((resolve, reject) => {
+            let newObj = JSON.stringify(obj);
+            //patch updates one property
+            $http.patch(`${FBCreds.databaseURL}/users/${id}.json`, newObj)
+                .then((data) => {
+                    console.log("editUser Patch: ", data);
+                    resolve(data);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+
+
+    };
 
 
 
 
 
     const isAuthenticated = function (){
-        // console.log("userFactory: isAuthenticated");
+        console.log("userFactory: isAuthenticated running");
         return new Promise ( (resolve, reject) => {
             firebase.auth().onAuthStateChanged( (user) => {
                 if (user){
                     currentUser = user.uid;
-                    // console.log("user", user.uid);
+                    console.log("user in isAuthenticated", user);
                     resolve(true);
                 }else {
                     resolve(false);
@@ -197,6 +205,6 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
 
 
 
-    return {getCurrentUser, logOut, isAuthenticated, authWithProvider, updateDisplayName, userIsInFirebase, addUserToFirebase, getFBCurrentUser, getCurrentUserFullObj};
+    return {getFirebaseId, logOut, isAuthenticated, authWithProvider, userIsInFirebase, addUserToFirebase, getFBCurrentUser, getCurrentUserFullObj, editUser, currentUserFullObj};
 
 });

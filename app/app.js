@@ -2,19 +2,19 @@
 // check ngSanitize spelling etc.
 const app = angular.module("WXly", ["ngRoute", "ngSanitize"]);
 
-// let isAuth = (userFactory) => new Promise ( (resolve, reject) => {
-//   console.log("userFactory is", userFactory);
-//   userFactory.isAuthenticated()
-//   .then( (userExists) => {
-//     if(userExists){
-//       console.log("Authenticated, go ahead");
-//       resolve();
-//     }else {
-//       console.log("Authentication reject, GO AWAY");
-//       reject();
-//     }
-//   });
-// });
+let isAuth = (userFactory) => new Promise ( (resolve, reject) => {
+  console.log("userFactory is", userFactory);
+  userFactory.isAuthenticated()
+  .then( (userExists) => {
+    if(userExists){
+      console.log("Authenticated, go ahead");
+      resolve();
+    }else {
+      console.log("Authentication reject, GO AWAY");
+      reject();
+    }
+  });
+});
 
 
 
@@ -29,21 +29,21 @@ app.config(($routeProvider) => {
 	// 	templateUrl: 'partials/user.html',
 	// 	controller: 'userCtrl'
 	// })
-	// .when('/home', {
-	// 	templateUrl: 'partials/home.html',
-	// 	controller: 'homeCtrl',
-	// 	resolve: {isAuth}
-	// })
-	// .when('/profile', {
-	// 	templateUrl: 'partials/profile.html',
-	// 	controller: 'profileCtrl',
-	// 	resolve: {isAuth}
-	// })
-	// .when('/addpin', {
-	// 	templateUrl: 'partials/form.html',
-	// 	controller: 'addPinCtrl',
-	// 	resolve: {isAuth}
-	// })
+	.when('/home', {
+		templateUrl: 'partials/home.html',
+		controller: 'homeCtrl'//,
+		// resolve: {isAuth}
+	})
+	.when('/profile', {
+		templateUrl: 'partials/profile.html',
+		controller: 'profileCtrl'//,
+		// resolve: {isAuth}
+	})
+	.when('/edit-profile', {
+		templateUrl: 'partials/edit-profile.html',
+		controller: 'profileCtrl'//,
+		// resolve: {isAuth}
+	})
 	// .when('/addboard', {
 	// 	templateUrl: 'partials/form-board.html',
 	// 	controller: 'addBoardCtrl',

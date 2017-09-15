@@ -1,6 +1,6 @@
 "use strict";
 
-app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFactory){
+app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFactory, fbUserFactory, $route, $routeParams){
 
 	// *** MAPS *** 
 
@@ -25,11 +25,11 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 	// }
 	// catch(error) {
 
-		L.Wunderground.radar(
-	  {
-	    appId: 'e344d5b95b258ce2',
-	    apiRef: 'WXly'
-	  }).addTo(mymap);
+		// L.Wunderground.radar(
+	 //  {
+	 //    appId: 'e344d5b95b258ce2',
+	 //    apiRef: 'WXly'
+	 //  }).addTo(mymap);
 	
 	
 
@@ -47,6 +47,32 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
 	};
 
+	
+	// fbUserFactory.isAuthenticated()
+	// .then((isAuth) => {
+	// 	if(isAuth){
+	// 		// console.log("fbUserFactory.getFirebaseId ", fbUserFactory.getFirebaseId());
+	// 		fbUserFactory.getCurrentUserFullObj(fbUserFactory.getFirebaseId())
+	// 		.then((userObj) => {
+	// 			// Set the displayed county to the user's county
+	// 			$scope.selectedCounty = userObj.county;
+	// 			// Empty out the tweets array
+	// 			$scope.tweets = [];
+	// 			// Refresh timeline based on user's county (which is now shown in select)
+	// 			$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
+	// 			//Maybe this
+	// 			//$window.location.href = "#!/profile";
+	// 			// $route.reload();
+
+
+	// 		});
+	// 	}else{
+	// 		//Do the stuff for when no user is logged in (refresh timeline w/ NashSeverWX data)
+	// 	}
+
+	// });
+	
+
 	// *** TWEETS ***
 	//Create array to hold tweets.
 	$scope.tweets = [];
@@ -62,12 +88,37 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 		});
 	};
 
-	console.log("twitterUserFactory.isReady()", twitterUserFactory.isReady());
+	// console.log("twitterUserFactory.isReady()", twitterUserFactory.isReady());
 	if (twitterUserFactory.isReady()){
 		console.log("it's ready");
         $scope.connectedTwitter = true;
-        $scope.refreshTimeline(null, "%40nashseverewx");
-	 }
+        	fbUserFactory.isAuthenticated()
+			.then((isAuth) => {
+				if(isAuth){
+					// console.log("fbUserFactory.getFirebaseId ", fbUserFactory.getFirebaseId());
+					fbUserFactory.getCurrentUserFullObj(fbUserFactory.getFirebaseId())
+					.then((userObj) => {
+						// Set the displayed county to the user's county
+						$scope.selectedCounty = userObj.county;
+						// Empty out the tweets array
+						$scope.tweets = [];
+						// Refresh timeline based on user's county (which is now shown in select)
+						$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
+						//Maybe this
+						//$window.location.href = "#!/profile";
+						// $route.reload();
+						});
+				}else{
+					//Do the stuff for when no user is logged in (refresh timeline w/ NashSeverWX data)
+					// Empty out the tweets array
+					$scope.tweets = [];
+					$scope.refreshTimeline(null, "%40nashseverewx");
+
+				}
+
+			});
+    	}
+	 
 
 
 

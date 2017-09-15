@@ -1,91 +1,148 @@
 "use strict";
 // having $window injected forces reload of page
-app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserFactory, $location) {
-	// $scope.searchText = filterFactory;
-	$scope.isLoggedIn = false;
+app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserFactory, $location, $route, $routeParams) {
+    // $scope.searchText = filterFactory;
+    
+    // let $scope.isLoggedIn;
 
 
-  //Initialize Toastr Options:
-  toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-  };
+    //Initialize Toastr Options:
+    toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+    };
 
-  
+    
 
-  //Initialize OAuth
-  twitterUserFactory.initialize();
+    //Initialize OAuth
+    twitterUserFactory.initialize();
 
 //When login is clicked, log user into Firebase using Twitter, then log user into Twitter itself.
 $scope.login = () => {
     console.log("you clicked on login and login function is running");
     fbUserFactory.authWithProvider()
     .then((result) => {
-      console.log("result", result);
-      let user = result.user.uid;
-      $location.path("/home");
-      // addUser();
-      $scope.$apply();
-      console.log("login .then ran");
-      twitterUserFactory.connectTwitter()
-      .then(function(dataFromConnect) {
+        console.log("result", result);
+        let user = result.user.uid;
+        // $location.path("/home");
+        addUser();
+        // $scope.$apply();
+        console.log("login .then ran");
+        twitterUserFactory.connectTwitter()
+        .then(function(dataFromConnect) {
             if (twitterUserFactory.isReady()) {
                 console.log("connected to Twitter", "dataFromConnect :", dataFromConnect);
                 toastr.success("You are now connected to Twitter!", "Connected to Twitter");
                 //     $scope.refreshTimeline();
-                  $scope.connectedTwitter = true;
+                $scope.connectedTwitter = true;
+                $window.location.href = "#!/home";
+                $route.reload();
                 // });
             } else {
 
-               }
+                 }
         });
     })
     .catch((error) => {
-      console.log("error with Twitter login");
-      let errorCode = error.code;
-      let errorMessage = error.message;
-      console.log("error", error); 
+        console.log("error with Twitter login");
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        console.log("error", error); 
     });
-  };
+    };
 
-//When logout button is clicked:
-	$scope.logout = () => {
-        fbUserFactory.logOut();
-        twitterUserFactory.clearCache();
-        // *** Need to clear array of tweets here***
-        // $scope.$apply(function(){
-        $scope.connectedTwitter = false;
-      // });
-        toastr.success("You are now logged out!", "Logged Out");
-      };
-
-
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      $scope.isLoggedIn = true;
-      // console.log("currentUser logged in?", user);
-      // console.log("logged in t-f", $scope.isLoggedIn );
-      $scope.$apply();
-    } else {
-      $scope.isLoggedIn = false;
-      // console.log("user logged in?", $scope.isLoggedIn);
-      $window.location.href = "#!/login";
+    // Upon login, addUser checks to see if user is already in FB.  If not, it directs user to a form to add themselves.
+    function addUser(){
+        fbUserFactory.getFBCurrentUser()
+        .then( (user) => {
+            console.log("****user in addUser****", user);
+            // console.log("fbUserFactory.userIsInFirebase(user.uid) in addUser", fbUserFactory.userIsInFirebase(user.uid));
+            fbUserFactory.userIsInFirebase(user.uid)
+            .then((isInFirebase) => {
+                console.log("isInFirebase inside nested .then in addUser", isInFirebase);
+                console.log("user in nested .then in addUser", user);
+                console.log("user.email in nested .then in addUser", user.email);
+                console.log("user.displayName", user.displayName);
+                if(isInFirebase === false) {                                
+                    let userObj = {
+                        displayName: user.displayName,
+                        uid: user.uid,
+                        photoURL: user.photoURL,
+                        email: user.email,
+                        roleValue: 20
+                        };
+                    console.log("userObj in addUser", userObj);
+                    fbUserFactory.addUserToFirebase(userObj)
+                    .then ((userObj) => {
+                        $scope.displayName = userObj.displayName;
+                    });
+                    $window.location.href = "#!/home";
+                    
+                }else {
+                    console.log("user already in firebase");
+                    //update the local current user object
+                    fbUserFactory.getCurrentUserFullObj(fbUserFactory.getFirebaseId())
+                    .then((userObj) => {
+                        $scope.displayName = userObj.displayName;
+                    });
+                    $window.location.href = "#!/home";
+                    
+                }
+            });    
+        });
     }
-  });	
 
+
+
+
+
+    //When logout button is clicked:
+        $scope.logout = () => {
+            fbUserFactory.logOut();
+            twitterUserFactory.clearCache();
+            // *** Need to clear array of tweets here***
+            // $scope.$apply(function(){
+            $scope.connectedTwitter = false;
+            // });
+            toastr.success("You are now logged out!", "Logged Out");
+            };
+
+
+        firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            $scope.isLoggedIn = true;
+            // console.log("currentUser logged in?", user);
+            console.log("logged in t-f", $scope.isLoggedIn );
+            $scope.$apply();
+            $route.reload();
+        } else {
+            $scope.isLoggedIn = false;
+            console.log("user logged in?", $scope.isLoggedIn);
+            // $window.location.href = "#!/login";
+        }
+        }); 
+
+
+    //when first loaded, make sure no one is logged in
+    fbUserFactory.isAuthenticated();
+  // if (fbUserFactory.isAuthenticated()){
+  //   fbUserFactory.logOut();
+  //   twitterUserFactory.clearCache();
+  //   $scope.connectedTwitter = false;
+  // }
 
 
 
