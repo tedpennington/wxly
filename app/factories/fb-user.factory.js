@@ -6,13 +6,34 @@
 
  */
 
-app.factory("fbUserFactory", function($q, $http, FBCreds){
+app.factory("fbUserFactory", function($q, $http, FBCreds, $window){
+
+      // Local Storage of User so it will persist on refreshes
+    const setUserLocalStor = function (key, value) {
+        $window.localStorage.setItem(key,value);
+    };
+
+    const getUserLocalStor = function (key) {
+        let result = $window.localStorage.getItem(key);
+        return result;
+    };
+
+    const removeUserLocalStor = function (key) {
+        $window.localStorage.removeItem(key);
+    };
+
+
 
     // This is just the user's UID from Firebase
-    let currentUser;
+    let currentUser = getUserLocalStor("uid");
     // This is the complete user object that comes back from Firebase
-    let FBCurrentUser = null;
+    let FBCurrentUser;
     let currentUserFullObj;
+
+
+
+
+
 
 //Set up Twitter auth
     let provider = new firebase.auth.TwitterAuthProvider();
@@ -57,6 +78,7 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
 
     const logOut = function(){
         console.log("logoutUser");
+        removeUserLocalStor("uid"); 
         return firebase.auth().signOut();
 
     };
@@ -192,6 +214,7 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
             firebase.auth().onAuthStateChanged( (user) => {
                 if (user){
                     currentUser = user.uid;
+                    setUserLocalStor("uid", user.uid);
                     console.log("user in isAuthenticated", user);
                     resolve(true);
                 }else {
@@ -200,6 +223,8 @@ app.factory("fbUserFactory", function($q, $http, FBCreds){
             });
         });
     };
+
+   
 
     
 

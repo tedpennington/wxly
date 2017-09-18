@@ -1,6 +1,6 @@
 "use strict";
 // check ngSanitize spelling etc.
-const app = angular.module("WXly", ["ngRoute", "ngSanitize"]);
+const app = angular.module("WXly", ["ngRoute", "ngSanitize", "ngMap"]);
 
 let isAuth = (userFactory) => new Promise ( (resolve, reject) => {
   console.log("userFactory is", userFactory);
@@ -44,11 +44,11 @@ app.config(($routeProvider) => {
 		controller: 'profileCtrl'//,
 		// resolve: {isAuth}
 	})
-	// .when('/addboard', {
-	// 	templateUrl: 'partials/form-board.html',
-	// 	controller: 'addBoardCtrl',
-	// 	resolve: {isAuth}
-	// })
+	.when('/add-report', {
+		templateUrl: 'partials/add-report.html',
+		controller: 'addReportCtrl'//,
+		// resolve: {isAuth}
+	})
 	// .when('/pin/:itemId', {
 	// 	templateUrl: 'partials/pin-detail.html',
 	// 	controller: 'pinDetailCtrl',

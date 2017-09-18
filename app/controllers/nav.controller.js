@@ -1,9 +1,17 @@
 "use strict";
 // having $window injected forces reload of page
-app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserFactory, $location, $route, $routeParams) {
+app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserFactory, $location, $route, $routeParams, $timeout) {
     // $scope.searchText = filterFactory;
     
     // let $scope.isLoggedIn;
+
+    // On page load, try to get displayName value (null if logged out, np)
+
+    fbUserFactory.getCurrentUserFullObj(fbUserFactory.getFirebaseId())
+                    .then((userObj) => {
+                        console.log("userObj on NavCtrl page load", userObj);
+                        $scope.displayName = userObj.displayName;
+                    });
 
 
     //Initialize Toastr Options:
@@ -12,7 +20,7 @@ app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserF
     "debug": false,
     "newestOnTop": false,
     "progressBar": false,
-    "positionClass": "toast-top-right",
+    "positionClass": "toast-top-center",
     "preventDuplicates": false,
     "onclick": null,
     "showDuration": "300",
@@ -45,7 +53,7 @@ $scope.login = () => {
         .then(function(dataFromConnect) {
             if (twitterUserFactory.isReady()) {
                 console.log("connected to Twitter", "dataFromConnect :", dataFromConnect);
-                toastr.success("You are now connected to Twitter!", "Connected to Twitter");
+                toastr.success("You are now logged in, and connected to Twitter!", "Login | Connected to Twitter");
                 //     $scope.refreshTimeline();
                 $scope.connectedTwitter = true;
                 $window.location.href = "#!/home";
@@ -114,10 +122,10 @@ $scope.login = () => {
             fbUserFactory.logOut();
             twitterUserFactory.clearCache();
             // *** Need to clear array of tweets here***
-            // $scope.$apply(function(){
             $scope.connectedTwitter = false;
-            // });
-            toastr.success("You are now logged out!", "Logged Out");
+            toastr.success("Logging you out!", "Logged Out");
+            $timeout(function(){$window.location.reload();}, 3000);
+            
             };
 
 

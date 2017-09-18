@@ -1,0 +1,38 @@
+<h1><i>Create New Spotter Report</i></h1>
+
+Latitude: <input id="lat" name="lat" val="40.713956" /> <br/>
+Longitude: <input id="long" name="long" val="74.006653" /> <br/>
+<ng-map>
+    <marker position="current-location" draggable="true" centered="true" on-dragend="getCurrentLocation()"></marker>
+</ng-map>
+
+<form>
+    <div class="form-group">
+        <label>Address:</label>
+        <input type="text" class="form-control" placeholder="123 Main St." ng-model="addressStreet"/>
+    </div>
+    <div class="form-group">
+        <label>City:</label>
+        <input type="text" class="form-control" placeholder="Nashville" ng-model="addressCity"/>
+    </div>
+    <div class="form-group">
+        <label>State:</label>
+        <input type="text" size="2" class="form-control" placeholder="TN" ng-model="addressState"/>
+    </div>
+    <div class="form-group">
+        <label>Zip:</label>
+        <input type="number" class="form-control" placeholder="37203" ng-model="addressZip"/>
+    </div>
+    <div class="form-group">
+        <label>Completed Skywarn Training:</label>
+        <input type="checkbox" class="form-control" ng-model="skywarn"/>
+    </div>
+    
+    <div class="text-center">
+        <button type="button" class="btn btn-default" ng-click="submitReport()">SUBMIT REPORT</button>    
+    </div>
+</form>
+
+
+<h1> Address String: </h1>
+<h3>{{addressString}}<h3>
