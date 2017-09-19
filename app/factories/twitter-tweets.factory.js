@@ -34,6 +34,32 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
         };
     
 
+    const postTweet = function (status, lat, long, county, tspotter) {
+        let url = `https://api.twitter.com/1.1/statuses/update.json?`;
+        if(status){
+            url += `status=${status}`;
+        }
+        if(tspotter){
+            url += `%20%23tspotter`;
+        }
+        if(lat){
+            url += `%20lat=${lat}%20long=${long}%20display_coordinates=true`;
+        }
+        url += `%20${county}`;
+
+        console.log("postTweet URL: ", url);
+
+        return $q((resolve, reject) => {
+            twitterUserFactory.isReady().get(url).done(function(data) {
+                console.log("data from postTweet: ", data);
+                resolve(data);
+                });
+        });
+
+    };
+    
+
+
 
 
     return {getLatestTweets};

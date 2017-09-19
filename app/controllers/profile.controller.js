@@ -27,7 +27,7 @@ app.controller("profileCtrl", function ($scope, fbUserFactory, $location, $windo
 					case "%40nashseverewx":
 						$scope.countyName = "Davidson/Williamson";
 						break;
-					case "40bedfordseverewx":
+					case "%40bedfordseverewx":
 						$scope.countyName = "Bedford";
 						break;
 					case "%40cheathmseverewx":

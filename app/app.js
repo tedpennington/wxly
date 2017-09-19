@@ -1,6 +1,6 @@
 "use strict";
 // check ngSanitize spelling etc.
-const app = angular.module("WXly", ["ngRoute", "ngSanitize", "ngMap"]);
+const app = angular.module("WXly", ["ngRoute", "ngSanitize", "ngMap", "moment-picker"]);
 
 let isAuth = (userFactory) => new Promise ( (resolve, reject) => {
   console.log("userFactory is", userFactory);

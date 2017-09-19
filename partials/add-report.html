@@ -1,38 +1,142 @@
 <h1><i>Create New Spotter Report</i></h1>
+<p><h5>Your location has been estimated based on geolocation from your browser/device.</h5><br>
+    <h6>1. If the location is not accurate, you can manually enter coordinates, or enter an address or interesection below to get your coordinates. </h6>
+    <h6>2. Move the map pin to fine-tune the exact location of your report.</h6>
+</p>
+<hr>
+<h5><span style="text-decoration: underline;">Current Report Position:</span></h5>
+<strong>Latitude: </strong><input type="number" name="lat" ng-model="latitude" /><br><br>
+<strong>Longitude: </strong><input type="number" name="long" ng-model="longitude" /><br><br>
 
-Latitude: <input id="lat" name="lat" val="40.713956" /> <br/>
-Longitude: <input id="long" name="long" val="74.006653" /> <br/>
-<ng-map>
-    <marker position="current-location" draggable="true" centered="true" on-dragend="getCurrentLocation()"></marker>
+<ng-map center="[{{latitude}}, {{longitude}}]">
+    <marker position="{{latitude}},{{longitude}}" draggable="true" on-dragend="getCurrentLocation()"></marker>
 </ng-map>
+<hr>
 
-<form>
+<h4>Location :</h4>
+<div class="btn-group">
+  <label class="btn btn-outline-primary" ng-class="{'active':locateSelect=='currentMapPosition'}">
+    <input class="buttonsToggle" type="radio" name="options" value="currentMapPosition" ng-model="locateSelect" checked>Use Current Map Position
+  </label>
+  <label class="btn btn-outline-primary" ng-class="{'active':locateSelect=='address'}">
+    <input class="buttonsToggle" type="radio" name="options" value="address" ng-model="locateSelect">Locate By Address
+  </label>
+  <label class="btn btn-outline-primary" ng-class="{'active':locateSelect=='intersection'}">
+    <input class="buttonsToggle" type="radio" name="options" value="intersection" ng-model="locateSelect">Locate By Nearest Intersection
+  </label>
+</div>
+
+<div id="addressForm" ng-show="locateSelect=='address'">
+    <h5>Enter an address:</h5>
+    <form>
+        <div class="form-group">
+            <label>Address:</label>
+            <input type="text" class="form-control" placeholder="123 Main St." ng-model="addressStreet"/>
+        </div>
+        <div class="form-group">
+            <label>City:</label>
+            <input type="text" class="form-control" placeholder="Nashville" ng-model="addressCity"/>
+        </div>
+        <div class="form-group">
+            <label>State:</label>
+            <input type="text" size="2" class="form-control" placeholder="TN" ng-model="addressState"/>
+        </div>
+        <div class="form-group">
+            <label>Zip:</label>
+            <input type="number" class="form-control" placeholder="37203" ng-model="addressZip"/>
+        </div>
+        
+        <div class="text-center">
+            <button type="button" class="btn btn-default" ng-click="submitAddress()">SUBMIT ADDRESS</button>    
+        </div>
+    </form>
+</div>
+
+<div id="intersectionForm" ng-show="locateSelect=='intersection'">
+    <h5>Enter an intersection:</h5>
+    <form>
+        <div class="form-group">
+            <label>Street 1:</label>
+            <input type="text" class="form-control" placeholder="5th Ave." ng-model="interesectionStreet1"/>
+        </div>
+        <div class="form-group">
+            <label>Street 2:</label>
+            <input type="text" class="form-control" placeholder="Broadway" ng-model="interesectionStreet2"/>
+        </div>
+        <div class="form-group">
+            <label>City:</label>
+            <input type="text" class="form-control" placeholder="Nashville" ng-model="intersectionCity"/>
+        </div>
+        <div class="form-group">
+            <label>State:</label>
+            <input type="text" size="2" class="form-control" placeholder="TN" ng-model="intersectionState"/>
+        </div>
+        
+        <div class="text-center">
+            <button type="button" class="btn btn-default" ng-click="submitIntersection()">SUBMIT INTERSECTION</button>    
+        </div>
+    </form>
+</div>
+
+<br><br>
+<h4>Select Report Type/Season:</h4>
+<div class="btn-group">
+  <label class="btn btn-outline-primary" ng-class="{'active':season=='severe'}">
+    <input class="buttonsToggle" type="radio" name="options" value="severe" ng-model="season" checked>Severe
+  </label>
+  <label class="btn btn-outline-primary" ng-class="{'active':season=='winter'}">
+    <input class="buttonsToggle" type="radio" name="options" value="winter" ng-model="season">Winter
+  </label>
+</div>
+
+<!-- <h4>Season: {{season}}</h4> -->
+
+<div ng-show="season=='severe'">
+
+    <h5>Date/Time of Reported Event</h5>
+    <!-- ***NEED TO TWEAK THIS AND FIRST GET CURRENT DAY/TIME, POPULATE -->
+    <div class="input-group"
+     moment-picker="ctrl.timepicker"
+     format="LLLL" start-view="day">
+        <span class="input-group-addon">
+            <i class="octicon octicon-clock"></i>
+        </span>
+        <input class="form-control"
+               placeholder="Select a time"
+               ng-model="ctrl.timepicker"
+               ng-model-options="{ updateOn: 'blur' }">
+    </div> 
+
+    <form>
     <div class="form-group">
-        <label>Address:</label>
-        <input type="text" class="form-control" placeholder="123 Main St." ng-model="addressStreet"/>
+        <label>Street 1:</label>
+        <input type="text" class="form-control" placeholder="5th Ave." ng-model="interesectionStreet1"/>
+    </div>
+    <div class="form-group">
+        <label>Street 2:</label>
+        <input type="text" class="form-control" placeholder="Broadway" ng-model="interesectionStreet2"/>
     </div>
     <div class="form-group">
         <label>City:</label>
-        <input type="text" class="form-control" placeholder="Nashville" ng-model="addressCity"/>
+        <input type="text" class="form-control" placeholder="Nashville" ng-model="intersectionCity"/>
     </div>
     <div class="form-group">
         <label>State:</label>
-        <input type="text" size="2" class="form-control" placeholder="TN" ng-model="addressState"/>
-    </div>
-    <div class="form-group">
-        <label>Zip:</label>
-        <input type="number" class="form-control" placeholder="37203" ng-model="addressZip"/>
-    </div>
-    <div class="form-group">
-        <label>Completed Skywarn Training:</label>
-        <input type="checkbox" class="form-control" ng-model="skywarn"/>
+        <input type="text" size="2" class="form-control" placeholder="TN" ng-model="intersectionState"/>
     </div>
     
     <div class="text-center">
-        <button type="button" class="btn btn-default" ng-click="submitReport()">SUBMIT REPORT</button>    
+        <button type="button" class="btn btn-default" ng-click="submitIntersection()">SUBMIT INTERSECTION</button>    
     </div>
 </form>
 
 
-<h1> Address String: </h1>
-<h3>{{addressString}}<h3>
+</div>
+<button type="button" class="btn btn-default" ng-click="getCounty()">GET COUNTY</button>
+<div>{{}}</div>
+
+<div ng-show="season=='winter'">
+    It's winter
+</div>
+
+
