@@ -10,7 +10,7 @@ app.factory("twitterUserFactory", function($q, $http, FBCreds){
 
     const initialize = function() {
             //initialize OAuth.io with public key of the application
-            OAuth.initialize('H700ZZgDrOsPopl4RBHmJ3DVVLg', {cache:true});
+            OAuth.initialize('QMwchNoajCJ9xwNgLeumJKlX8-4', {cache:true});
             //try to create an authorization result when the page loads, this means a returning user won't have to click the twitter button again
             authorizationResult = OAuth.create('twitter');
         };
@@ -26,7 +26,7 @@ app.factory("twitterUserFactory", function($q, $http, FBCreds){
                     authorizationResult = result;
                     deferred.resolve(result);
                 } else {
-                    //do something if there's an error
+                    console.log("error in connectTwitter", error);
 
                 }
             });

@@ -93,9 +93,9 @@
 
 <div ng-show="season=='severe'">
 
-    <h5>Date/Time of Reported Event</h5>
+    <!-- <h5>Date/Time of Reported Event</h5> -->
     <!-- ***NEED TO TWEAK THIS AND FIRST GET CURRENT DAY/TIME, POPULATE -->
-    <div class="input-group"
+    <!-- <div class="input-group"
      moment-picker="ctrl.timepicker"
      format="LLLL" start-view="day">
         <span class="input-group-addon">
@@ -105,38 +105,195 @@
                placeholder="Select a time"
                ng-model="ctrl.timepicker"
                ng-model-options="{ updateOn: 'blur' }">
-    </div> 
+    </div>  -->
 
     <form>
-    <div class="form-group">
-        <label>Street 1:</label>
-        <input type="text" class="form-control" placeholder="5th Ave." ng-model="interesectionStreet1"/>
-    </div>
-    <div class="form-group">
-        <label>Street 2:</label>
-        <input type="text" class="form-control" placeholder="Broadway" ng-model="interesectionStreet2"/>
-    </div>
-    <div class="form-group">
-        <label>City:</label>
-        <input type="text" class="form-control" placeholder="Nashville" ng-model="intersectionCity"/>
-    </div>
-    <div class="form-group">
-        <label>State:</label>
-        <input type="text" size="2" class="form-control" placeholder="TN" ng-model="intersectionState"/>
-    </div>
-    
-    <div class="text-center">
-        <button type="button" class="btn btn-default" ng-click="submitIntersection()">SUBMIT INTERSECTION</button>    
-    </div>
-</form>
+        <!-- Is Tornado? -->
+        <div>
+            <h5>Tornadic Features Observed?</h5>
+            <div class="form-check form-check-inline" ng-init="isTornado='false'">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isTornado" id="isTornadoBtn" ng-model="isTornado" value="true"> Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isTornado" id="isNotTornadoBtn" ng-model="isTornado" value="false" checked> No
+              </label>
+            </div>
+        </div>
+        <!-- Tornado Type? -->
+        <div id="tornadoType" ng-show="isTornado=='true'">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="tornadicFeature" value="tornado"> Tornado
+              </label>
+              <small id="tornadoHelp" class="form-text text-muted">Observed <em>on the ground</em>.</small>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="tornadicFeature" value="funnelCloud"> Funnel Cloud
+              </label>
+              <small id="tornadoHelp" class="form-text text-muted">Observed <em>not</em> on the ground.</small>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" ng-model="tornadicFeature" value="wallCloud"> Wall Cloud
+              </label>
+              <small id="tornadoHelp" class="form-text text-muted">See <a href="https://www.weather.gov/media/dmx/Spotter/reference_guide.pdf" target="_blank">examples.</a></small>
+            </div>
+        </div>
+        <!-- Rotation? -->
+        <div id="rotationInfo" ng-show="tornadicFeature">
+            <div class="form-check">
+                <br>
+                <h5>Was rotation observed?</h5>
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="rotationOptions" id="rotation" ng-model="rotation" value="true"> Yes
+              </label>
+              <small id="tornadoHelp" class="form-text text-muted">Rotation was observed in the tornadic feature</small>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="rotationOptions" id="rotation" ng-model="rotation" value="false"> No
+              </label>
+              <small id="tornadoHelp" class="form-text text-muted">Rotation was <em>not</em> observed in the tornadic feature</small>
+            </div>
+        </div>
 
+        <!-- Hail? -->
+        <div>
+            <h5>Hail Observed?</h5>
+            <div class="form-check form-check-inline" ng-init="isHail='false'">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isHail" id="isHailBtn" ng-model="isHail" value="true"> Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isHail" id="isNotHailBtn" ng-model="isHail" value="false" checked> No
+              </label>
+            </div>
+            <div class="form-group" ng-show="isHail=='true'">
+                <label for="hailSizeSelect">Hail Size</label>
+                <select class="form-control" id="hailSizeSelect" ng-model="hailSize">
+                    <option value="0.75">0.75" (Penny)</option>
+                    <option value="0.88">0.88" (Nickel)</option>
+                    <option value="1.00">1.00" (Quarter)</option>
+                    <option value="1.25">1.25" (Half Dollar)</option>
+                    <option value="1.50">1.50" (Walnut)</option>
+                    <option value="1.75">1.75" (Golf Ball)</option>
+                    <option value="2.00">2.00" (Hen Egg)</option>
+                    <option value="2.50">2.50" (Tennis Ball)</option>
+                    <option value="2.75">2.75" (Baseball)</option>
+                    <option value="3.00">3.00" (Tea Cup)</option>
+                    <option value="4.00">4.00" (Grapefruit)</option>
+                    <option value="4.50">4.50"+ (Softball and up)</option>
+                </select>
+            </div>
+        </div>
 
-</div>
-<button type="button" class="btn btn-default" ng-click="getCounty()">GET COUNTY</button>
-<div>{{}}</div>
+        <!-- High Wind? -->
+       <div>
+            <h5>Straight-Line/Burst/Other High Wind Observed?</h5>
+            <div class="form-check form-check-inline" ng-init="isWind='false'">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isWind" id="isWindBtn" ng-model="isWind" value="true"> Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isWind" id="isNotWindBtn" ng-model="isWind" value="false" checked> No
+              </label>
+            </div>
+            <div class="form-group" ng-show="isWind=='true'">
+                <label for="windSpeedSelect">Wind Speed</label>
+                <select class="form-control" id="windSpeedSelect" ng-model="windSpeed">
+                    <option value="0.75">50Mph or Less (Minimal Damage)</option>
+                    <option value="0.88">60Mph-70Mph (2" branches and smaller broken)</option>
+                    <option value="1.00">70Mph-80Mph (2-4" branches broken)</option>
+                    <option value="1.25">80Mph+ (Signifiant Damage)</option>
+                </select>
+            </div>
+            <div ng-show="isWind=='true'">
+                <div class="form-check form-check-inline" ng-init="isMeasured='estimated'">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="isMeasured" id="isMeasuredBtn" ng-model="isMeasured" value="measured"> Measured
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="isMeasured" id="isNotMeasuredBtn" ng-model="isMeasured" value="estimated" checked> Estimated
+                  </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flooding -->
+        <div>
+            <h5>Flooding Observed?</h5>
+            <div class="form-check form-check-inline" ng-init="isFlood='false'">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isFlood" id="isFloodBtn" ng-model="isFlood" value="true"> Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isFlood" id="isNotFloodBtn" ng-model="isFlood" value="false" checked> No
+              </label>
+            </div>
+            <p ng-show="isFlood=='true'">Please decribe below (areal, flash flood, etc.)</p>
+        </div>
+
+        <!-- Damage -->
+        <div>
+            <h5>Damage Observed?</h5>
+            <div class="form-check form-check-inline" ng-init="isDamage='false'">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isDamage" id="isDamageBtn" ng-model="isDamage" value="true"> Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isDamage" id="isNotDamageBtn" ng-model="isDamage" value="false" checked> No
+              </label>
+            </div>
+            <p ng-show="isDamage=='true'">Please decribe the damage below.</p>
+        </div>
+
+        <!-- Injuries -->
+        <div>
+            <h5>Injuries Observed?</h5>
+            <div class="form-check form-check-inline" ng-init="isInjuries='false'">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isInjuries" id="isInjuriesBtn" ng-model="isInjuries" value="true"> Yes
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="isInjuries" id="isNotInjuriesBtn" ng-model="isInjuries" value="false" checked> No
+              </label>
+            </div>
+            <p ng-show="isInjuries=='true'">Please decribe the injuries below, and call 911 if EMS/assistance is needed.</p>
+        </div>
+
+        <div class="form-group">
+        <label for="reportNarrative">Please add report narrative below:</label>
+        <textarea class="form-control" id="reportNarrative" rows="3" ng-model="reportNarrative"></textarea>
+      </div>
+
+        
+
+    </form>
+</div> <!--/.season-->
 
 <div ng-show="season=='winter'">
-    It's winter
+    Winter Report Form Coming Soon!
 </div>
+
+<button type="button" class="btn btn-default" ng-show="season=='severe'" ng-click="submitReport()">SUBMIT REPORT</button>
+<!-- <div>{{reportCounty}}</div> -->
+
+
 
 

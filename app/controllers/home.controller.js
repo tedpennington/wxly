@@ -18,10 +18,10 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 	// Add Radar Tile Layer from Aeris
 	// Try won't catch error (yet?) because http call still returns response (doesn't throw error)
 	// try {
-		// L.tileLayer('https://maps.aerisapi.com/SG9I7hQDyk9aQlp1hOWPd_NeapmCClJqrFmnAntR8zm33nBadOLxyE1MqRn1hL/alerts,radar,stormcells/{z}/{x}/{y}/current.png', {
-	 //    subdomains: '1234',
-	 //    attribution: '&copy;AerisWeather',
-		// }).addTo(mymap);
+		L.tileLayer('https://maps.aerisapi.com/SG9I7hQDyk9aQlp1hOWPd_NeapmCClJqrFmnAntR8zm33nBadOLxyE1MqRn1hL/alerts,radar,stormcells/{z}/{x}/{y}/current.png', {
+	    subdomains: '1234',
+	    attribution: '&copy;AerisWeather',
+		}).addTo(mymap);
 	// }
 	// catch(error) {
 
@@ -81,7 +81,17 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 
 		//using the OAuth authorization result get the latest 20 tweets from twitter for the user
 		twitterTweetsFactory.getLatestTweets(maxId, county, onlyTspotter).then(function(data) {
-			console.log(data);
+			console.log("data to populate tweets arr", data);
+			for (let i = 0; i < data.length; i++){
+				// console.log("this ONE: ", data[i]);
+				if(data[i].coordinates !== null){
+					console.log("making a marker, or should be");
+					console.log("coordinates to marker", data[i].coordinates.coordinates[0],data[i].coordinates.coordinates[1]);
+					L.marker([data[i].coordinates.coordinates[1],data[i].coordinates.coordinates[0]]).addTo(mymap)
+	        		.bindPopup(`<strong>From: ${data[i].user.name}:</strong><br> ${data[i].text}<br><small>at ${data[i].created_at}</small>`)
+	        		.openPopup();
+	        	}
+			}
 			$scope.tweets = $scope.tweets.concat(data);
 		}, function() { // ***** What is this function??  Error handler as second arg to .then?? ***
 			$scope.rateLimitError = true;

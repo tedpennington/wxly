@@ -73,19 +73,19 @@ app.factory("mapsFactory", function($q, $http, $window){
             return $q((resolve, reject) => {
                 console.log("lat/long coordinates in getCountyByCoordinates: ", lat, long);
                 let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyBDlKPuHFqkczwxL-0p-SJ5UyCskYUdp0g`;
-                console.log("url in getCountyByCoordinates: ", url);
+                // console.log("url in getCountyByCoordinates: ", url);
                 $http.post(url)
                 .then((data) => {
                     console.log("data from getCountyByCoordinates", data);
                     let addressComponentsArray = data.data.results[0].address_components;
                     let county = "";
-                    console.log("components ", addressComponentsArray);
+                    // console.log("components ", addressComponentsArray);
                     for (let i = 0; i < addressComponentsArray.length; i++) {
-                        console.log("addressComponentsArray[i]", addressComponentsArray[i].long_name);
-                        console.log("includes t/f", addressComponentsArray[i].long_name.toLowerCase().includes("county"));
+                        // console.log("addressComponentsArray[i]", addressComponentsArray[i].long_name);
+                        // console.log("includes t/f", addressComponentsArray[i].long_name.toLowerCase().includes("county"));
                         if (addressComponentsArray[i].long_name.toLowerCase().includes("county")) {
                             county = addressComponentsArray[i].long_name;
-                            console.log("county in if statement: ", county);
+                            // console.log("county in if statement: ", county);
                             break;
                         }
                     }

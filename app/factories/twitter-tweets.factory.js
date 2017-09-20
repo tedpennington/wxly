@@ -35,6 +35,7 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
     
 
     const postTweet = function (status, lat, long, county, tspotter) {
+        console.log("status in postTweet", status, "length: ", status.length);
         let url = `https://api.twitter.com/1.1/statuses/update.json?`;
         if(status){
             url += `status=${status}`;
@@ -42,17 +43,21 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
         if(tspotter){
             url += `%20%23tspotter`;
         }
-        if(lat){
-            url += `%20lat=${lat}%20long=${long}%20display_coordinates=true`;
-        }
         url += `%20${county}`;
+        if(lat){
+            url += `&lat=${lat}&long=${long}&display_coordinates=true`;
+        }
+        url = url.replace(/ /g, "%20");
 
         console.log("postTweet URL: ", url);
 
         return $q((resolve, reject) => {
-            twitterUserFactory.isReady().get(url).done(function(data) {
+            twitterUserFactory.isReady().post(url).done(function(data) {
                 console.log("data from postTweet: ", data);
                 resolve(data);
+                })
+                .fail((error) => {
+                    console.log("error from post: ", error);
                 });
         });
 
@@ -62,6 +67,6 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
 
 
 
-    return {getLatestTweets};
+    return {getLatestTweets, postTweet};
 
 });

@@ -1,6 +1,6 @@
 "use strict";
 
-app.controller('addReportCtrl', function($scope, twitterTweetsFactory, mapsFactory, NgMap){
+app.controller('addReportCtrl', function($scope, twitterTweetsFactory, mapsFactory, NgMap, $q, $window){
 
 	// Get the user's Geolocation:
 	mapsFactory.getGeoLocation()
@@ -99,78 +99,139 @@ app.controller('addReportCtrl', function($scope, twitterTweetsFactory, mapsFacto
 	//Defaults for controls:
 	$scope.locateSelect ='currentMapPosition';
 	$scope.season = "severe";
+
 	
 
 	$scope.getCounty = function() {
-		mapsFactory.getCountyByCoordinates($scope.latitude, $scope.longitude)
-		.then((county) => {
-			console.log("County is: ", county);
-			switch(true) {
-					case (county.toLowerCase().includes("davidson") || county.toLowerCase().includes("williamson")):
-						$scope.reportCounty = "%40nashseverewx";
-						console.log("switch case", $scope.reportCounty);
-						break;
-					case county.toLowerCase().includes("bedford"):
-						$scope.reportCounty = "%40bedfordseverewx";
-						break;
-					case county.toLowerCase().includes("cheatham"):
-						$scope.reportCounty = "%40cheathmseverewx";
-						break;
-					case county.toLowerCase().includes("coffee"):
-						$scope.reportCounty = "%40coffeeseverewx";
-						break;
-					case county.toLowerCase().includes("dickson"):
-						$scope.reportCounty = "%40dicksonseverewx";
-						break;
-					case county.toLowerCase().includes("hickman"):
-						$scope.reportCounty = "%40hickmanseverewx";
-						break;
-					case county.toLowerCase().includes("lawrence"):
-						$scope.reportCounty = "%40lawrencesvrewx";
-						break;
-					case county.toLowerCase().includes("macon"):
-						$scope.reportCounty = "%40maconseverewx";
-						break;
-					case county.toLowerCase().includes("marshal"):
-						$scope.reportCounty = "%40marshseverewx";
-						break;
-					case county.toLowerCase().includes("maury"):
-						$scope.reportCounty = "%40mauryseverewx";
-						break;
-					case county.toLowerCase().includes("montgomery"):
-						$scope.reportCounty = "%40montcoseverewx";
-						break;
-					case county.toLowerCase().includes("overton"):
-						$scope.reportCounty = "%40overtonseverewx";
-						break;
-					case county.toLowerCase().includes("putnam"):
-						$scope.reportCounty = "%40putnamseverewx";
-						break;
-					case county.toLowerCase().includes("robertson"):
-						$scope.reportCounty = "%40robcoseverewx";
-						break;
-					case county.toLowerCase().includes("rutherford"):
-						$scope.reportCounty = "%40ruthseverewx";
-						break;
-					case county.toLowerCase().includes("smith"):
-						$scope.reportCounty = "%40smithcountywx";
-						break;
-					case county.toLowerCase().includes("sumner"):
-						$scope.reportCounty = "%40sumnerseverewx";
-						break;
-					case county.toLowerCase().includes("trousdale"):
-						$scope.reportCounty = "%40trousdalewx";
-						break;
-					case county.toLowerCase().includes("wilson"):
-						$scope.reportCounty = "%40wilsonseverewx";
-						break;
-					}
-				console.log("reportCount is: ", $scope.reportCounty);
+		return $q((resolve, reject) => {mapsFactory.getCountyByCoordinates($scope.latitude, $scope.longitude)
+			.then((county) => {
+				console.log("County is: ", county);
+				switch(true) {
+						case (county.toLowerCase().includes("davidson") || county.toLowerCase().includes("williamson")):
+							$scope.reportCounty = "%40nashseverewx";
+							console.log("switch case", $scope.reportCounty);
+							break;
+						case county.toLowerCase().includes("bedford"):
+							$scope.reportCounty = "%40bedfordseverewx";
+							break;
+						case county.toLowerCase().includes("cheatham"):
+							$scope.reportCounty = "%40cheathmseverewx";
+							break;
+						case county.toLowerCase().includes("coffee"):
+							$scope.reportCounty = "%40coffeeseverewx";
+							break;
+						case county.toLowerCase().includes("dickson"):
+							$scope.reportCounty = "%40dicksonseverewx";
+							break;
+						case county.toLowerCase().includes("hickman"):
+							$scope.reportCounty = "%40hickmanseverewx";
+							break;
+						case county.toLowerCase().includes("lawrence"):
+							$scope.reportCounty = "%40lawrencesvrewx";
+							break;
+						case county.toLowerCase().includes("macon"):
+							$scope.reportCounty = "%40maconseverewx";
+							break;
+						case county.toLowerCase().includes("marshal"):
+							$scope.reportCounty = "%40marshseverewx";
+							break;
+						case county.toLowerCase().includes("maury"):
+							$scope.reportCounty = "%40mauryseverewx";
+							break;
+						case county.toLowerCase().includes("montgomery"):
+							$scope.reportCounty = "%40montcoseverewx";
+							break;
+						case county.toLowerCase().includes("overton"):
+							$scope.reportCounty = "%40overtonseverewx";
+							break;
+						case county.toLowerCase().includes("putnam"):
+							$scope.reportCounty = "%40putnamseverewx";
+							break;
+						case county.toLowerCase().includes("robertson"):
+							$scope.reportCounty = "%40robcoseverewx";
+							break;
+						case county.toLowerCase().includes("rutherford"):
+							$scope.reportCounty = "%40ruthseverewx";
+							break;
+						case county.toLowerCase().includes("smith"):
+							$scope.reportCounty = "%40smithcountywx";
+							break;
+						case county.toLowerCase().includes("sumner"):
+							$scope.reportCounty = "%40sumnerseverewx";
+							break;
+						case county.toLowerCase().includes("trousdale"):
+							$scope.reportCounty = "%40trousdalewx";
+							break;
+						case county.toLowerCase().includes("wilson"):
+							$scope.reportCounty = "%40wilsonseverewx";
+							break;
+						}
+					// console.log("reportCount is: ", $scope.reportCounty);
+						resolve($scope.reportCounty);
+					
 
+			});
 		});
 	};
 
+	// Function to submit report on click of submit button
+	$scope.submitReport = function (){
+		let reportStatus = "WXly Rpt: ";
+		$scope.getCounty()
+		.then((county) => {
+			// reportStatus += "Lctn Geotagged. ";
+			// checking for string "true" here because it passes string and not boolean :/
+			if ($scope.isTornado === "true") {
+				reportStatus += "Tornadic Ftr: ";
+				if($scope.tornadicFeature == "tornado"){
+					reportStatus += "Tornado, ";
+				}else if($scope.tornadicFeature == "funnelCloud"){
+					reportStatus += "Funnel Cloud, ";
+				}else if($scope.tornadicFeature == "wallCloud"){
+					reportStatus += "Wall Cloud, ";
+				}
+				if($scope.rotation === "true"){
+					reportStatus += "rotating. ";
+				}else{
+					reportStatus += "not rotating. ";
+				}
+			}
+			if ($scope.isHail === "true") {
+				reportStatus += "Hail: " + $scope.hailSize + "in. ";
 
+			}
+			if ($scope.isWind === "true") {
+				reportStatus += "Wind: " + $scope.windSpeed + "Mph " + $scope.isMeasured + ". ";
+			}
+			if ($scope.isFlood === "true") {
+				reportStatus += "Flooding. ";
+			}
+			if ($scope.isDamage === "true") {
+				reportStatus += "Damage Observed. ";
+			}
+			if ($scope.isInjuries === "true") {
+				reportStatus += "Injures Observed. ";
+			}
+			reportStatus += "Narrative: " + $scope.reportNarrative;
+			
+			console.log("reportStatus: ", reportStatus);
+			console.log("report lat/long: ", $scope.latitude, $scope.longitude);
+			console.log("report County in .then of getCounty upon Submit function: ", $scope.reportCounty);
+
+			// reportStatus = reportStatus.replace(/ /g, "%20");
+			// console.log("reportStatus replaced? ", reportStatus);
+			twitterTweetsFactory.postTweet(reportStatus, $scope.latitude, $scope.longitude, $scope.reportCounty, true)
+			.then((data) => {
+				console.log("data after report submitted", data);
+				toastr.success("Your report was submitted!", "SUBMITTED:");
+				$window.setTimeout(function() {
+					$window.location.href = "#!/home";
+				}, 3000);
+			});
+		});
+
+		
+	};
 
 
 
