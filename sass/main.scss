@@ -39,6 +39,22 @@
     padding: 3px 0 3px 5px;
 }
 
+#map-legend {
+    z-index: 100000;
+    position: absolute;
+    bottom: 25px;
+    left: 10px;
+    // font-size: 18px;
+    // font-weight: bold;
+    // color: #222;
+    // width: 60%;
+    background-color: rgba(255,255,255,0.60);
+    // border-bottom: 3px solid #0097e2;
+    // padding: 0 0 5px 0;
+    // margin: 0 0 5px 0;
+
+}
+
 .report-controls {
     background-color: #176A9F;
     margin-top: 2em;

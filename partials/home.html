@@ -2,11 +2,12 @@
 	<div class="col-12 main-column">
 		<!-- <h1>MAP HERE</h1> -->
 		<!-- MAP -->
+		<!-- search:{{searchText.search}} -->
 		<br>
 		<div class="map-container">
 			<div id="mapid"></div>
 			<div class="map-title">Current Spotter Reports and Radar</div>
-			<!-- <img id="map-legend" src="img/legend.svg"/> -->
+			<img id="map-legend" src="img/legend-advisories.svg"/>
 		</div>	<!-- /.map-container-->
 	</div> <!--/.col-->
 </div> <!--/.row-->
@@ -28,6 +29,7 @@
 		<div class="form-group">
 			<label for="countySelect">Select County:</label>
 			<select class="form-control" id="countySelect" name="countySelect" ng-model="selectedCounty" ng-change="selectCounty()">
+				<option value="">All</option>
 		      	<option value="%40nashseverewx">Davidson/Williamson</option>
 		      	<option value="%40bedfordseverewx">Bedford</option>
 		      	<option value="%40cheathmseverewx">Cheatham</option>
@@ -55,7 +57,7 @@
 
 <div class="row">
 	<div class="col-12" id="results">
-        <div class="row tweet" ng-repeat="t in tweets">
+        <div class="row tweet" ng-repeat="t in tweets | filter: searchText.search">
 
 	        <div class="col-xs-2 col-sm-2">
 	            <img ng-src="{{t.user.profile_image_url}}" class="rounded-circle">
@@ -75,7 +77,7 @@
 	    </div>
 	    <div>
 	        <br/>
-	        <input type="button" class="btn btn-info" id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id)" ng-show="connectedTwitter" value="Load More" />
+	        <input type="button" class="btn btn-info" id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id, selectedCounty, tspotterValue)" ng-show="connectedTwitter" value="Load More" />
 	    </div>
 	</div>
 </div> <!--/.row

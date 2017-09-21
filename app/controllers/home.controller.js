@@ -1,6 +1,8 @@
 "use strict";
 
-app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFactory, fbUserFactory, $route, $routeParams){
+app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFactory, fbUserFactory, filterFactory, $rootScope, $route, $routeParams){
+
+	$scope.searchText = filterFactory;  
 
 	// *** MAPS *** 
 

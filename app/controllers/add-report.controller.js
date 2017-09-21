@@ -165,6 +165,8 @@ app.controller('addReportCtrl', function($scope, twitterTweetsFactory, mapsFacto
 						case county.toLowerCase().includes("wilson"):
 							$scope.reportCounty = "%40wilsonseverewx";
 							break;
+						default: 
+							$scope.reportCounty = "";
 						}
 					// console.log("reportCount is: ", $scope.reportCounty);
 						resolve($scope.reportCounty);
