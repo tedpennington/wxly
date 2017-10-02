@@ -128,7 +128,7 @@ $scope.login = () => {
             // *** Need to clear array of tweets here***
             $scope.connectedTwitter = false;
             toastr.success("Logging you out!", "Logged Out");
-            $timeout(function(){$window.location.reload();}, 3000);
+            $timeout(function(){$window.location.href = "#!/home";}, 3000);
             
             };
 
