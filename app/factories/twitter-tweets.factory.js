@@ -15,10 +15,13 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
             if (onlyTspotter) {
                 url += '%20%23tspotter';
             }
-            console.log('url', url);
+            if (searchTerm) {
+                url += searchTerm;
+            }
             if (maxId) {
                 url +=  '?max_id=' + maxId;
             }
+            console.log('url getting tweets', url);
             // *****  Why are we doing .get on authorizationResult?? **********
             var promise = twitterUserFactory.isReady().get(url).done(function(data) {
                 let statuses = data.statuses;

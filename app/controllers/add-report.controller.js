@@ -225,7 +225,7 @@ app.controller('addReportCtrl', function($scope, twitterTweetsFactory, mapsFacto
 			twitterTweetsFactory.postTweet(reportStatus, $scope.latitude, $scope.longitude, $scope.reportCounty, true)
 			.then((data) => {
 				console.log("data after report submitted", data);
-				toastr.success("Your report was submitted!", "SUBMITTED:");
+				toastr.success("Your report was submitted!  It may take a few seconds for it to show up on Twitter/WXly.", "SUBMITTED:");
 				$window.setTimeout(function() {
 					$window.location.href = "#!/home";
 				}, 3000);

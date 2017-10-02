@@ -1,7 +1,7 @@
 "use strict";
 // having $window injected forces reload of page
-app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserFactory, $location, $route, $routeParams, $timeout) {
-    // $scope.searchText = filterFactory;
+app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserFactory, $location, $route, $routeParams, $timeout, filterFactory) {
+    $scope.searchText = filterFactory;
     
     // let $scope.isLoggedIn;
 
