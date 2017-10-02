@@ -4,6 +4,10 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 
 	$scope.searchText = filterFactory;  
 
+	//Get the logged in t/f value that is set in a factory (b/c set from nav controller, and read here)
+	$scope.loggedIn = fbUserFactory.isLoggedInFB;
+	console.log("$scope.loggedIn: ", $scope.loggedIn);
+
 	// *** MAPS *** 
 
 	// Creating Leaflet Map
@@ -40,13 +44,23 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 	$scope.tspotterChanged = function() {
 		// console.log("$scope.tspotterValue", $scope.tspotterValue);
 		$scope.tweets.length = 0;
-		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
+		console.log("selected county in tspotterChanged: ", $scope.selectedCounty);
+		if (!$scope.selectedCounty) {
+			console.log("IT WAS NULL");
+			$scope.selectedCounty = "%40nashseverewx";
+		}
+		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue, $scope.searchText.search);
 	};
 
 	$scope.selectCounty = function() {
 		// console.log("You selected this county: ", $scope.selectedCounty);
 		$scope.tweets.length = 0;
-		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue);
+		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue, $scope.searchText.search);
+	};
+
+	$scope.doSearch = function() {
+		$scope.tweets.length = 0;
+		$scope.refreshTimeline(null, $scope.selectedCounty, $scope.tspotterValue, $scope.searchText.search);
 	};
 
 	
@@ -79,10 +93,11 @@ app.controller("homeCtrl", function($scope, twitterTweetsFactory, twitterUserFac
 	//Create array to hold tweets.
 	$scope.tweets = [];
 
-	$scope.refreshTimeline = function(maxId, county, onlyTspotter){
+	$scope.refreshTimeline = function(maxId, county, onlyTspotter, searchTerm){
+
 
 		//using the OAuth authorization result get the latest 20 tweets from twitter for the user
-		twitterTweetsFactory.getLatestTweets(maxId, county, onlyTspotter).then(function(data) {
+		twitterTweetsFactory.getLatestTweets(maxId, county, onlyTspotter, searchTerm).then(function(data) {
 			console.log("data to populate tweets arr", data);
 			for (let i = 0; i < data.length; i++){
 				// console.log("this ONE: ", data[i]);

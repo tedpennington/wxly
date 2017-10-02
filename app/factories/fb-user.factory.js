@@ -30,6 +30,8 @@ app.factory("fbUserFactory", function($q, $http, FBCreds, $window){
     let FBCurrentUser;
     let currentUserFullObj;
 
+    let isLoggedInFB;
+
 
 
 
@@ -230,6 +232,6 @@ app.factory("fbUserFactory", function($q, $http, FBCreds, $window){
 
 
 
-    return {getFirebaseId, logOut, isAuthenticated, authWithProvider, userIsInFirebase, addUserToFirebase, getFBCurrentUser, getCurrentUserFullObj, editUser, currentUserFullObj};
+    return {getFirebaseId, isLoggedInFB, logOut, isAuthenticated, authWithProvider, userIsInFirebase, addUserToFirebase, getFBCurrentUser, getCurrentUserFullObj, editUser, currentUserFullObj};
 
 });

@@ -7,6 +7,7 @@
 <h5><span style="text-decoration: underline;">Current Report Position:</span></h5>
 <strong>Latitude: </strong><input type="number" name="lat" ng-model="latitude" /><br><br>
 <strong>Longitude: </strong><input type="number" name="long" ng-model="longitude" /><br><br>
+<h6>(Geolocation position accurate within approximately: <strong>{{accuracy}}</strong> meters.)</h6><br><br>
 
 <ng-map center="[{{latitude}}, {{longitude}}]">
     <marker position="{{latitude}},{{longitude}}" draggable="true" on-dragend="getCurrentLocation()"></marker>

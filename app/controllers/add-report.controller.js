@@ -2,17 +2,31 @@
 
 app.controller('addReportCtrl', function($scope, twitterTweetsFactory, mapsFactory, NgMap, $q, $window){
 
-	// Get the user's Geolocation:
-	mapsFactory.getGeoLocation()
-	.then((data) => {
-		console.log("data.location: ", data.location);
-		$scope.latitude = data.location.lat;
-		$scope.longitude = data.location.lng;
-		// toastr.success("Your geolocation has been found!  See map below to refine.", "Geolocation:");
-		// *** 	WHY IS THIS CONTROLLER LOADING TWICE (CAUSING 2 TOAST NOTIFS)???? ***
-		// console.log("$scope.latitude", $scope.latitude);
+	//Try to locate using browser geolocation:
+	
 
-	});
+	if (navigator.geolocation) {
+		console.log("Browser geolocation working");
+		mapsFactory.getBrowserGeoLocation()
+		.then((position) => {
+			console.log("position: ", position);
+			$scope.latitude = position.coords.latitude;
+			$scope.longitude = position.coords.longitude;
+			$scope.accuracy = position.coords.accuracy;
+		});
+	}
+	else {
+		// Get the user's Geolocation from Google API:
+		mapsFactory.getGeoLocation()
+		.then((data) => {
+		// 	console.log("data.location: ", data.location);
+			$scope.latitude = data.location.lat;
+			$scope.longitude = data.location.lng;
+			// ***toastr.success("Your geolocation has been found!  See map below to refine.", "Geolocation:");
+			// *** 	WHY IS THIS CONTROLLER LOADING TWICE (CAUSING 2 TOAST NOTIFS)???? ***
+			// ***console.log("$scope.latitude", $scope.latitude);
+		});
+	}
 
 	//*********************************
 

@@ -13,7 +13,7 @@
 </div> <!--/.row-->
 
 	<!-- TWEETS -->
-<div class="row report-controls">
+<div class="row report-controls" ng-show="loggedIn">
 	<div class="col-3">
 	 	<h4>Spotter Reports Settings:</h4>
 	</div>
@@ -29,7 +29,7 @@
 		<div class="form-group">
 			<label for="countySelect">Select County:</label>
 			<select class="form-control" id="countySelect" name="countySelect" ng-model="selectedCounty" ng-change="selectCounty()">
-				<option value="">All</option>
+				<option ng-if="tspotterValue" value="">All</option>
 		      	<option value="%40nashseverewx">Davidson/Williamson</option>
 		      	<option value="%40bedfordseverewx">Bedford</option>
 		      	<option value="%40cheathmseverewx">Cheatham</option>
@@ -55,9 +55,16 @@
 </div> <!--/.row-->
 
 
-<div class="row">
+<div class="row" ng-show="loggedIn">
 	<div class="col-12" id="results">
-        <div class="row tweet" ng-repeat="t in tweets | filter: searchText.search">
+		<div class="form-group">
+			<form ng-submit="doSearch()" class="form-inline mt-2 mt-md-0">
+	          <input class="form-control mr-2" size="40" type="text" placeholder="Search Reports" aria-label="Search" ng-model="searchText.search">
+	          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+	        </form>
+	    </div> <!--/.form-group-->
+
+        <div class="row tweet" ng-repeat="t in tweets"> <!--| filter: searchText.search-->
 
 	        <div class="col-xs-2 col-sm-2">
 	            <img ng-src="{{t.user.profile_image_url}}" class="rounded-circle">
@@ -80,4 +87,13 @@
 	        <input type="button" class="btn btn-info" id="load-more" ng-click="refreshTimeline(tweets[tweets.length-1].id, selectedCounty, tspotterValue)" ng-show="connectedTwitter" value="Load More" />
 	    </div>
 	</div>
-</div> <!--/.row
+</div> <!--/.row-->
+
+<div class="row" ng-show="!loggedIn">
+	<div class="col-12" id="noLogin">
+		<hr>
+		<h2><em>Please login to show reports.</em></h2>
+	</div>
+</div> <!--/.row-->
+
+

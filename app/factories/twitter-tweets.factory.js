@@ -6,7 +6,7 @@
 
 app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFactory){
 
-    const getLatestTweets = function(maxId, county, onlyTspotter){
+    const getLatestTweets = function(maxId, county, onlyTspotter, searchTerm){
             //create deferred object
             var deferred = $q.defer();
             //user timeline:
@@ -16,7 +16,7 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
                 url += '%20%23tspotter';
             }
             if (searchTerm) {
-                url += searchTerm;
+                url += `%20${searchTerm}`;
             }
             if (maxId) {
                 url +=  '?max_id=' + maxId;
@@ -24,6 +24,7 @@ app.factory("twitterTweetsFactory", function($q, $http, FBCreds, twitterUserFact
             console.log('url getting tweets', url);
             // *****  Why are we doing .get on authorizationResult?? **********
             var promise = twitterUserFactory.isReady().get(url).done(function(data) {
+                console.log("data from call", data);
                 let statuses = data.statuses;
                 //Convert all the Twitter timestamps to js dates
                 statuses.forEach(function(status){

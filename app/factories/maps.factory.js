@@ -33,6 +33,49 @@ app.factory("mapsFactory", function($q, $http, $window){
     };
 
 
+    // Browser Geolocation
+    var geolocationOptions = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+
+        console.log('Your current position is:');
+        console.log(`Latitude : ${crd.latitude}`);
+        console.log(`Longitude: ${crd.longitude}`);
+        console.log(`More or less ${crd.accuracy} meters.`);
+        // $scope.latitude = crd.latitude;
+        // $scope.longitude = crd.longitude;
+        // $scope.accuracy = crd.accuracy;
+        }
+
+    function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    const getBrowserGeoLocation = function(){
+        return $q((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, geolocationOptions);
+                // .then((position) => {
+                //     // console.log("data from getLocation", data);
+                //     console.log("location from Browser Geolocation: ", position);
+                //     // setUserLocation("location", data.data.location);
+                //     // setUserLocationAccuracy("location-accuracy", data.data.accuracy);
+                //     resolve(position);
+                    
+                });
+
+            };
+
+
+    
+
+
+
+    // Google API Geolocation
     const getGeoLocation = function(){
             return $q((resolve, reject) => {
                 $http.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBDlKPuHFqkczwxL-0p-SJ5UyCskYUdp0g')
@@ -101,6 +144,6 @@ app.factory("mapsFactory", function($q, $http, $window){
 
 
     return {getGeoLocation, setUserLocation, getUserLocation, removeUserLocation, setUserLocationAccuracy, 
-            getUserLocationAccuracy, removeUserLocationAccuracy, getLocationByAddress, getCountyByCoordinates};
+            getUserLocationAccuracy, removeUserLocationAccuracy, getLocationByAddress, getCountyByCoordinates, getBrowserGeoLocation};
 
 });

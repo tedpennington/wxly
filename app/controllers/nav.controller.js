@@ -9,8 +9,12 @@ app.controller("navCtrl", function ($scope, $window, fbUserFactory, twitterUserF
 
     fbUserFactory.getCurrentUserFullObj(fbUserFactory.getFirebaseId())
                     .then((userObj) => {
-                        console.log("userObj on NavCtrl page load", userObj);
-                        $scope.displayName = userObj.displayName;
+                        if(userObj){
+                            console.log("userObj on NavCtrl page load", userObj);
+                            $scope.displayName = userObj.displayName;
+                        }else {
+                            console.log("No user logged in");
+                        }
                     });
 
 
@@ -132,12 +136,14 @@ $scope.login = () => {
         firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             $scope.isLoggedIn = true;
+            fbUserFactory.isLoggedInFB = true;
             // console.log("currentUser logged in?", user);
             console.log("logged in t-f", $scope.isLoggedIn );
             $scope.$apply();
             $route.reload();
         } else {
             $scope.isLoggedIn = false;
+            fbUserFactory.isLoggedInFB = false;
             console.log("user logged in?", $scope.isLoggedIn);
             // $window.location.href = "#!/login";
         }
