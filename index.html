@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WXly</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="lib/node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- Toastr CSS -->
+    <link href="lib/node_modules/toastr/build/toastr.min.css" rel="stylesheet"/>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" type="text/css" href="lib/node_modules/leaflet/dist/leaflet.css">
+
+    <!-- Angular Moment Picker -->
+    <link rel="stylesheet" type="text/css" href="lib/node_modules/angular-moment-picker/dist/angular-moment-picker.min.css">
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/284de0f567.js"></script>
+
+</head>
+<!-- Angular app is on body -->
+<body ng-app="WXly">
+
+    <!-- NAVBAR -->
+    <div ng-include="'partials/navbar.html'"></div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-10">
+                <div ng-view>
+                APP VIEWS GO HERE!
+                </div> <!-- /.ng-view-->
+            </div>
+
+            <div class="col-sm-2 blog-sidebar">
+                
+                <div class="sidebar-module">
+                    <!-- <h4>Tweet Stream</h4> -->
+                    <a class="twitter-timeline" href="https://twitter.com/NashSevereWx">Tweets by NashSevereWx</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+                <div class="sidebar-module sidebar-module-inset">
+                    <h4>About</h4>
+                    <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+                <div class="sidebar-module">
+                    <h4>Elsewhere</h4>
+                    <ol class="list-unstyled">
+                      <li><a href="#">GitHub</a></li>
+                      <li><a href="#">Twitter</a></li>
+                      <li><a href="#">Facebook</a></li>
+                    </ol>
+                </div>
+            </div><!-- /.blog-sidebar -->
+
+
+        </div> <!-- /.row -->
+    </div>  <!-- /.container -->
+
+
+
+
+    <!-- Jquery and Bootstrap -->
+    <script type="text/javascript" src="./lib/node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="./lib/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Leaflet -->
+    <script type="text/javascript" src="./lib/node_modules/leaflet/dist/leaflet.js"></script>
+
+    <!--leaflet-wunderground-->
+    <script type="text/javascript" src="./lib/node_modules/leaflet-wunderground/src/wunderground.layer.js"></script>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDlKPuHFqkczwxL-0p-SJ5UyCskYUdp0g"
+    async defer></script>
+
+    
+
+    <!-- Angular -->
+    <script type="text/javascript" src="./lib/node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="./lib/node_modules/angular-route/angular-route.min.js"></script>
+
+    <!-- NgMap -->
+    <script type="text/javascript" src="./lib/node_modules/ngmap/build/scripts/ng-map.min.js"></script>
+
+    <!-- Angular Sanitize -->
+    <script type="text/javascript" src="./lib/node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+
+    <!-- Firebase -->
+    <script type="text/javascript" src="./lib/node_modules/firebase/firebase.js"></script>
+
+    <!-- OAuth -->
+    <script src="app/oauth.js"></script>
+
+    <!-- Toastr -->
+    <script type="text/javascript" src="./lib/node_modules/toastr/build/toastr.min.js"></script>
+
+    <!-- Moment.js -->
+    <script type="text/javascript" src="./lib/node_modules/moment/min/moment.min.js"></script>
+
+    <!-- Angular Moment Picker -->
+    <script type="text/javascript" src="./lib/node_modules/angular-moment-picker/dist/angular-moment-picker.min.js"></script>
+
+    <!-- App -->
+    <script type="text/javascript" src="app/app.js"></script>
+
+    <!-- Controllers -->
+    <script type="text/javascript" src="app/controllers/home.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/nav.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/profile.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/add-report.controller.js"></script>
+
+    <!-- Factories -->
+    <script type="text/javascript" src="app/factories/fb-reports.factory.js"></script>
+    <script type="text/javascript" src="app/factories/fb-user.factory.js"></script>
+    <script type="text/javascript" src="app/factories/twitter-tweets.factory.js"></script>
+    <script type="text/javascript" src="app/factories/twitter-user.factory.js"></script>
+    <script type="text/javascript" src="app/factories/maps.factory.js"></script>
+    <script type="text/javascript" src="app/factories/filter.factory.js"></script>
+
+
+    <!-- Values -->
+    <script type="text/javascript" src="app/values/fb-creds.js"></script>
+
+
+
+</body>
+</html>

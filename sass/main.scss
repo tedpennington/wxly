@@ -1,0 +1,87 @@
+#wxly-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+
+#mapid { height: 500px; }
+
+#new-report-map > div {
+    border-radius: 15px;
+}
+
+.map-container { 
+    position: relative; 
+    // display: inline-block;
+    font-family: "Helvetica","Arial",sans-serif;
+}
+#mapid {
+    // border-radius: 15px;
+}
+
+.leaflet-container {
+    z-index: 0;
+    border-radius: 15px;
+    box-shadow: 3px 3px 5px 6px #ccc;
+    padding: 5em;
+    // margin: 2em;
+}
+
+// .map-watermark { 
+//     position: absolute; 
+//     bottom: 5px; 
+//     right: 5px; 
+//     width: 92px; 
+//     height: 46px; 
+//     background: url(https://www.aerisweather.com/img/logos/watermark-small.png) no-repeat 0 0;
+// }
+.map-title {
+	z-index: 100000;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+    width: 60%;
+    background: rgba(255,255,255,0.60);
+    border-bottom: 3px solid #0097e2;
+    padding: 3px 0 3px 5px;
+}
+
+#map-legend {
+    z-index: 100000;
+    position: absolute;
+    bottom: 25px;
+    left: 10px;
+    // font-size: 18px;
+    // font-weight: bold;
+    // color: #222;
+    // width: 60%;
+    background-color: rgba(255,255,255,0.60);
+    // border-bottom: 3px solid #0097e2;
+    // padding: 0 0 5px 0;
+    // margin: 0 0 5px 0;
+
+}
+
+.report-controls {
+    background-color: #176A9F;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding: 1em;
+    border-radius: 15px;
+    border: 5px black solid;
+}
+
+.tweet {
+    border: 1px black solid;
+    background-color: #E5E5E5;
+    margin-bottom: 1em;
+    padding: 2em;
+    border-radius: 15px;
+}
+
+.buttonsToggle {
+    display: none;
+}

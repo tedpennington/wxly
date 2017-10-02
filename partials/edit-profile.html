@@ -1,0 +1,42 @@
+<h1><i>Edit Profile:</i></h1>
+<br>
+<h4>NAME: {{userName}}</h4>
+<img ng-src="{{photoURL}}" class="rounded-circle"/>
+
+<form>
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" class="form-control" placeholder="user@domain.com" ng-model="email"/>
+    </div>
+    <div class="form-group">
+        <label>Completed Skywarn Training:</label>
+        <input type="checkbox" class="form-control" ng-model="skywarn"/>
+    </div>
+    <div class="form-group">
+        <label for="countySelect">County:</label>
+        <select class="form-control" id="countySelect" name="countySelect" ng-model="county">
+            <option selected value="%40nashseverewx">Davidson/Williamson</option>
+            <option value="%40bedfordseverewx">Bedford</option>
+            <option value="%40cheathmseverewx">Cheatham</option>
+            <option value="%40coffeeseverewx">Coffee</option>
+            <option value="%40dicksonseverewx">Dickson</option>
+            <option value="%40hickmanseverewx">Hickman</option>
+            <option value="%40lawrencesvrewx">Lawrence</option>
+            <option value="%40maconseverewx">Macon</option>
+            <option value="%40marshseverewx">Marshall</option>
+            <option value="%40mauryseverewx">Maury</option>
+            <option value="%40montcoseverewx">Montgomery</option>
+            <option value="%40overtonseverewx">Overton</option>
+            <option value="%40putnamseverewx">Putnam</option>
+            <option value="%40robcoseverewx">Robertson</option>
+            <option value="%40ruthseverewx">Rutherford</option>
+            <option value="%40smithcountywx">Smith</option>
+            <option value="%40sumnerseverewx">Sumner</option>
+            <option value="%40trousdalewx">Trousdale</option>
+            <option value="%40wilsonseverewx">Wilson</option>
+        </select>
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-default" ng-click="submitProfile()">SAVE</button>    
+    </div>
+</form>
